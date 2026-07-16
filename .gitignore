@@ -20,3 +20,4 @@ src/config/calibration.ts
 # misc
 .DS_Store
 *.log
+*.tsbuildinfo

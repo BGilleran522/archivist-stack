@@ -1,5 +1,9 @@
 # archivist-stack
 
+[![CI](https://github.com/BGilleran522/archivist-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/BGilleran522/archivist-stack/actions/workflows/ci.yml)
+[![Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org/)
+
 **One substrate, three shipped products.**
 
 `archivist-stack` is the reusable backbone behind a portfolio of otherwise
@@ -18,6 +22,7 @@ the nouns, and it's yours.
 ## Table of contents
 
 - [Why this exists](#why-this-exists)
+- [What you get](#what-you-get)
 - [The five layers](#the-five-layers)
 - [Repository map](#repository-map)
 - [Quickstart](#quickstart)
@@ -49,6 +54,27 @@ Everything here is deliberately assembled from **standard, well-understood
 techniques**. That is a feature: the mechanism is not the moat. The moat is the
 tuning — and the tuning is kept out of this repo on purpose (see
 [The calibration boundary](#the-calibration-boundary-your-ip)).
+
+---
+
+## What you get
+
+Clone this when your product needs structured records, history, retrieval, and
+an AI agent that can work from evidence instead of guessing.
+
+**Included and working:**
+
+- Supabase schema, RLS, and seven ordered migrations.
+- Entity CRUD plus an append-only event timeline.
+- A typed lifecycle state machine with transition guards.
+- Document chunking, vector storage, and retrieval seams.
+- Ingestion adapters with normalization, deduplication, and event logging.
+- Persona prompts, tool registration, fact extraction, and durable memory.
+- Strict TypeScript, unit tests, a production build, and CI.
+
+**Deliberately yours to supply:** your domain nouns, real embedding provider,
+ingest sources, persona voice, and calibrated thresholds. The template removes
+plumbing; it does not pretend to contain your product.
 
 ---
 
@@ -144,26 +170,31 @@ archivist-stack/
 
 ```bash
 # 1. Clone into your new product's name
-git clone <your-fork> my-product && cd my-product
+git clone https://github.com/BGilleran522/archivist-stack.git my-product
+cd my-product
 
-# 2. Install
-npm install
+# 2. Install exactly what the lockfile specifies
+npm ci
 
-# 3. Wire config
+# 3. Create your private, git-ignored calibration from neutral defaults
+npm run setup
+
+# 4. Prove the substrate works before connecting any services
+npm run verify
+
+# 5. Wire services
 cp .env.example .env.local                        # fill in Supabase + Anthropic keys
-cp src/config/calibration.example.ts src/config/calibration.ts
 
-# 4. Apply the schema (requires the Supabase CLI + a project)
+# 6. Apply the schema (requires the Supabase CLI + a project)
 supabase db push
 
-# 5. Run
+# 7. Run
 npm run dev            # http://localhost:3000
-npm run test           # 9 tests, no network required
-npm run typecheck
 ```
 
-The repo typechecks clean and its tests pass out of the box with the stub
-calibration — you can verify the substrate before writing a line of domain code.
+`npm run setup` is idempotent: it creates the neutral calibration once and never
+overwrites your private values. You can verify the substrate before writing a
+line of domain code or connecting a database.
 
 ---
 
@@ -344,13 +375,17 @@ parser, the pipeline, the persona wiring — is functional.
 ## Testing & CI
 
 ```bash
+npm run setup       # create neutral local calibration once; never overwrites it
 npm run test        # Vitest, 9 tests, no network/DB required
 npm run typecheck   # tsc --noEmit, strict
+npm run build       # production Next.js build
+npm run verify      # all of the above
 ```
 
 The pure logic (lifecycle transitions, fact-extraction parsing/validation) is
-unit-tested with zero external dependencies. `.github/workflows/ci.yml` runs
-typecheck + tests on every push and PR.
+unit-tested with zero external dependencies. `.github/workflows/ci.yml` follows
+the same setup path as a new user, then runs typecheck, tests, and a production
+build on every push and pull request.
 
 ---
 
@@ -373,12 +408,18 @@ Standard Next.js + Supabase deployment; nothing exotic:
 - [ ] A second reference ingest adapter (barcode / webhook) to show a non-RSS seam.
 - [ ] Optional multi-tenancy migration set (for products that outgrow single-user).
 
+Have a use case or adapter that would improve the domain-neutral substrate?
+[Open an issue](https://github.com/BGilleran522/archivist-stack/issues) or read
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
 ---
 
 ## License & attribution
 
 Apache License 2.0 — commercial use is fine and the patent grant is included.
 See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+Security reports should follow [SECURITY.md](SECURITY.md), not a public issue.
 
 Built as the shared substrate behind three independent products. The mechanism is
 open; the calibration is yours.

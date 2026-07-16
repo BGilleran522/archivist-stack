@@ -5,19 +5,20 @@
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
+    "setup": "node scripts/ensure-calibration.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify": "npm run setup && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.87.0",
+    "@anthropic-ai/sdk": "0.111.0",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.103.0",
-    "next": "^15.0.0",
+    "next": "16.2.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -25,6 +26,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "typescript": "^5",
-    "vitest": "^2.0.0"
+    "vitest": "4.1.10"
+  },
+  "overrides": {
+    "postcss": "8.5.10"
   }
 }
