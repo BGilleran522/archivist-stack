@@ -1,0 +1,22 @@
+# deps / build
+node_modules/
+.next/
+out/
+coverage/
+dist/
+
+# env
+.env
+.env.local
+.env*.local
+
+# --- IP boundary -------------------------------------------------------
+# Your tuned weights/thresholds/prompts are the product's edge. Keep them
+# out of any public fork. The app imports from calibration.ts and falls
+# back to calibration.example.ts, so the repo still runs without this file.
+src/config/calibration.ts
+# -----------------------------------------------------------------------
+
+# misc
+.DS_Store
+*.log

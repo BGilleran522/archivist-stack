@@ -1,0 +1,2 @@
+# Minimal Supabase config. Run `supabase init` to regenerate a full one.
+project_id = "archivist-stack"
